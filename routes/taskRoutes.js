@@ -1,4 +1,6 @@
 import express from "express";
+import { authenticate } from "../middlewares/authMiddleware.js";
+
 import {
   getTasks,
   getTaskById,
@@ -9,10 +11,11 @@ import {
 
 const router = express.Router();
 
-router.get("/", getTasks);
-router.get("/:id", getTaskById);
-router.post("/", createTask);
-router.patch("/:id", updateTask);  
-router.delete("/:id", deleteTask);
+// Apply authentication middleware to all task routes
+router.get("/", authenticate, getTasks);
+router.get("/:id", authenticate, getTaskById);
+router.post("/", authenticate, createTask);
+router.patch("/:id", authenticate, updateTask);  
+router.delete("/:id", authenticate, deleteTask);
 
 export default router;
